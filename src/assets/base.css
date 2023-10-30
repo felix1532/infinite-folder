@@ -30,10 +30,12 @@ a:active {
 
 html,
 body {
-    font-weight: 400;
-    font-size: 14px;
-    color: black;
+    font-weight: 500;
+    font-size: 18px;
+    color: #e3e5e8;
+    font-family: Trebuchet MS, sans-serif;
     line-height: 1.25em;
+    background-color: #1a1a1a;
 }
 
 h1,
