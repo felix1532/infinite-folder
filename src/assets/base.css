@@ -1,0 +1,53 @@
+* {
+    padding: 0;
+    margin: 0;
+    border: 0;
+    box-sizing: border-box;
+    line-height: 1;
+}
+
+
+:focus,
+:active {
+    outline: none;
+}
+
+
+:active,
+:hover,
+:focus {
+    user-select: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:focus,
+a:active {
+    outline: none;
+}
+
+html,
+body {
+    font-weight: 400;
+    font-size: 14px;
+    color: black;
+    line-height: 1.25em;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+label {
+    color: black;
+    line-height: 1.25em;
+}
+
+ul li {
+    list-style: none;
+}
