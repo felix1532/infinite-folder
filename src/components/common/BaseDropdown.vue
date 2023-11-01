@@ -5,15 +5,18 @@
   >
     <div
       class="dropdown-activator"
-      @click="toggleDropdown()"
+      @click="prevent ? constVoid : toggleDropdown()"
     >
-      <slot name="trigger"></slot>
+      <slot
+        name="trigger"
+        :toggleDropdown="toggleDropdown"
+      ></slot>
     </div>
     <Transition>
       <div
         v-show="dropdownOpen"
         class="dropdown-content"
-        @click="closeOnClick ? toggleDropdown(false) : () => void 0"
+        @click="closeOnClick ? toggleDropdown(false) : constVoid"
       >
         <slot
           name="content"
@@ -25,16 +28,21 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from 'vue';
+  import { ref, watch } from 'vue';
+  import { constVoid } from '@/utils/function';
 
   const props = withDefaults(
     defineProps<{
+      modelValue?: boolean;
       closeOnClickOutside?: boolean;
       closeOnClick?: boolean;
+      prevent?: boolean;
     }>(),
     {
+      modelValue: false,
       closeOnClickOutside: true,
       closeOnClick: false,
+      prevent: false,
     }
   );
 
@@ -43,7 +51,7 @@
     (e: 'update:modelValue', value: boolean): void;
   }>();
 
-  const dropdownOpen = ref<boolean>(false);
+  const dropdownOpen = ref<boolean>(props.modelValue);
 
   const toggleDropdown = (value = !dropdownOpen.value) => {
     dropdownOpen.value = value;
@@ -58,6 +66,15 @@
       toggleDropdown(false);
     }
   };
+
+  watch(
+    () => props.modelValue,
+    () => {
+      if (props.modelValue !== dropdownOpen.value) {
+        dropdownOpen.value = props.modelValue;
+      }
+    }
+  );
 </script>
 
 <style scoped>
@@ -71,9 +88,10 @@
   .dropdown-content {
     position: absolute;
     background: #434445;
-    padding: 10px;
     border-radius: 8px;
-    top: calc(100% + 4px);
+    top: 0;
+    left: calc(100% + 4px);
+    z-index: 100;
   }
 
   .v-enter-active {

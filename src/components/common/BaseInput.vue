@@ -1,6 +1,7 @@
 <template>
-  <div>
+  <div class="input-container">
     <input
+      ref="inputRef"
       class="input-field"
       :placeholder="placeholder"
       :value="modelValue"
@@ -11,7 +12,26 @@
 </template>
 
 <script setup lang="ts">
-  defineProps<{ modelValue: string; placeholder: string }>();
+  import { onMounted, ref } from 'vue';
+
+  const props = withDefaults(
+    defineProps<{
+      modelValue: string;
+      placeholder: string;
+      autofocus?: boolean;
+    }>(),
+    {
+      autofocus: false,
+    }
+  );
+
+  const inputRef = ref<HTMLInputElement>();
+
+  onMounted(() => {
+    if (inputRef.value && props.autofocus) {
+      inputRef.value?.focus();
+    }
+  });
 
   const emits = defineEmits<(e: 'update:modelValue', value: string) => void>();
   const handleInput = (event: Event) => {
@@ -22,16 +42,25 @@
 </script>
 
 <style scoped>
-  .input-field {
-    background: transparent;
-    width: 100%;
+  .input-container {
     padding: 6px;
+    background-color: #434445;
+    border-radius: 8px;
+  }
+
+  .input-field {
+    width: 100%;
+    background-color: transparent;
     color: white;
+    font-size: 18px;
+    font-family:
+      Trebuchet MS,
+      sans-serif;
   }
 
   .input-field::placeholder {
     color: white;
-    font-size: 14px;
+    font-size: 16px;
     font-family:
       Trebuchet MS,
       sans-serif;

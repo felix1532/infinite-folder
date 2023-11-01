@@ -1,7 +1,7 @@
 <template>
   <div class="main-container">
-    <BaseFileSystem
-      :data="fileSystem"
+    <FileSystem
+      :data="virtualModelFileSystem"
       class="file-system"
     />
   </div>
@@ -9,13 +9,46 @@
 
 <script setup lang="ts">
   import { useFileSystemStore } from '@/stores/fileSystemStore/store';
-  import BaseFileSystem from '@/components/FileSystem/BaseFileSystem.vue';
+  import FileSystem from '@/components/FileSystem/FileSystem.vue';
+  import type { TInitSchemeFileSystem } from '@/stores/fileSystemStore/models/initScheme';
 
-  const { createNodeFileSystem, fileSystem } = useFileSystemStore();
+  const { generateFileSystemByScheme, virtualModelFileSystem } =
+    useFileSystemStore();
 
-  //TODO: create method for generate initial system folders
-  createNodeFileSystem('Folder 1');
-  createNodeFileSystem('Folder 2');
+  //Схема инициализация файловой системы
+  const scheme: TInitSchemeFileSystem = [
+    { type: 'folder', name: 'Folder 1', isShow: false },
+    {
+      type: 'folder',
+      name: 'Folder 2',
+      isShow: false,
+      children: [
+        { type: 'folder', name: 'Folder 2.1', isShow: false },
+        {
+          type: 'folder',
+          name: 'Folder 2.2',
+          isShow: false,
+          children: [
+            {
+              type: 'folder',
+              name: 'Folder 2.2.1',
+              isShow: false,
+            },
+            {
+              type: 'pdf',
+              name: 'Pdf File 2.2.2',
+              extension: 'pdf',
+              value: 'pdf data',
+            },
+          ],
+        },
+      ],
+    },
+    { type: 'pdf', name: 'Pdf File 3', extension: 'pdf', value: 'pdf data' },
+  ];
+
+  //Инициалзиация узлов файловой системы соотвествии со схемой
+  generateFileSystemByScheme(scheme);
 </script>
 
 <style scoped>
@@ -28,7 +61,7 @@
   }
 
   .file-system {
-    width: 500px;
+    min-width: 500px;
     height: fit-content;
   }
 </style>

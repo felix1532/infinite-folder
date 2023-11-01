@@ -17,9 +17,11 @@ const VClickOutside: ObjectDirective = {
       }
     };
     document.addEventListener('click', element.clickOutsideEvent);
+    document.addEventListener('contextmenu', element.clickOutsideEvent);
   },
   unmounted: element => {
     document.removeEventListener('click', element.clickOutsideEvent);
+    document.removeEventListener('contextmenu', element.clickOutsideEvent);
   },
 };
 
