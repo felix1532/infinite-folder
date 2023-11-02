@@ -5,7 +5,7 @@
   >
     <FolderContextMenuFileSystem
       :hideMenu="!isEditName"
-      @folder="updateShowFolder"
+      @folder="updateShowFolder(!node.isShow)"
       @createNode="toggleCreateNode"
       @editName="toggleEditFolderName"
       @delete="deleteFolder"
@@ -84,7 +84,7 @@
     isEditName.value = !isEditName.value;
   };
 
-  const updateShowFolder = (value: boolean = !node.value.isShow) => {
+  const updateShowFolder = (value: boolean) => {
     editCurrentNode({
       isShow: value,
     });
